@@ -1,9 +1,9 @@
-import React from "react";
-import throttle from "lodash/throttle.js";
-import raf from "raf";
+import React from 'react';
+import throttle from 'lodash/throttle.js';
+import raf from 'raf';
 
 const getCoords = (e: any) => {
-  if (e.type === "touchmove") {
+  if (e.type === 'touchmove') {
     return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
   }
 
@@ -11,7 +11,7 @@ const getCoords = (e: any) => {
 };
 
 export interface ScrollAreaProps {
-  placement: "top" | "bottom";
+  placement: 'top' | 'bottom';
   enabled?: boolean;
   height?: number;
   zIndex?: number;
@@ -36,22 +36,22 @@ export function ScrollArea({
   const scaleYRef = React.useRef(0);
   const frameRef = React.useRef<number | null>(null);
 
-  const direction = placement === "top" ? -1 : 1;
+  const direction = placement === 'top' ? -1 : 1;
 
   // Drag a fixed, invisible box of custom height at the top, and bottom
   // of the window. Make sure to show it only when dragging something.
   const style: React.CSSProperties = {
-    position: "fixed",
+    position: 'fixed',
     height,
-    width: "100%",
+    width: '100%',
     opacity: 0,
     zIndex,
     ...scrollAreaProps?.style,
   };
 
-  if (placement === "top") {
+  if (placement === 'top') {
     style.top = 0;
-  } else if (placement === "bottom") {
+  } else if (placement === 'bottom') {
     style.bottom = 0;
   }
 

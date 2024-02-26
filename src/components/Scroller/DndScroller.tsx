@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import { dndStore } from "../../dndStore";
-import { Scroller, ScrollerProps } from "./Scroller";
+import { dndStore } from '../../dndStore';
+import { Scroller, ScrollerProps } from './Scroller';
 
 export function DndScroller(props: Partial<ScrollerProps>) {
   const isDragging = dndStore.use.isDragging();

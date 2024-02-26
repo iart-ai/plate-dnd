@@ -1,12 +1,12 @@
-import { WithPartial } from "@udecode/plate-common";
+import { WithPartial } from '@udecode/plate-common';
 
-import { useDndNode, UseDndNodeOptions } from "./useDndNode";
-import { DRAG_ITEM_BLOCK } from "./useDragBlock";
+import { useDndNode, UseDndNodeOptions } from './useDndNode';
+import { DRAG_ITEM_BLOCK } from './useDragBlock';
 
 /**
  * {@link useDndNode}
  */
-export const useDndBlock = (options: WithPartial<UseDndNodeOptions, "type">) =>
+export const useDndBlock = (options: WithPartial<UseDndNodeOptions, 'type'>) =>
   useDndNode({
     type: DRAG_ITEM_BLOCK,
     ...options,

@@ -10,7 +10,7 @@ import * as slate from 'slate';
 import { Path } from 'slate';
 
 interface ScrollAreaProps {
-    placement: "top" | "bottom";
+    placement: 'top' | 'bottom';
     enabled?: boolean;
     height?: number;
     zIndex?: number;
@@ -21,7 +21,7 @@ interface ScrollAreaProps {
 }
 declare function ScrollArea({ placement, enabled, height, zIndex, minStrength, strengthMultiplier, containerRef, scrollAreaProps, }: ScrollAreaProps): React.JSX.Element | null;
 
-type ScrollerProps = Omit<ScrollAreaProps, "placement">;
+type ScrollerProps = Omit<ScrollAreaProps, 'placement'>;
 /**
  * Set up an edge scroller at the top of the page for scrolling up.
  * One at the bottom for scrolling down.
@@ -39,10 +39,8 @@ declare const createDndPlugin: <OP = DndPlugin, OV extends _udecode_slate.Value 
 
 declare const dndStore: zustand_x.StoreApi<"dnd", {
     isDragging: boolean;
-    editorId: null;
 }, zustand_x.StateActions<{
     isDragging: boolean;
-    editorId: null;
 }>, {}>;
 
 interface DragItemNode {
@@ -52,8 +50,8 @@ interface DragItemNode {
     id: string;
     [key: string]: unknown;
 }
-type DropLineDirection = "" | "top" | "bottom";
-type DropDirection = "top" | "bottom" | undefined;
+type DropLineDirection = '' | 'top' | 'bottom';
+type DropDirection = 'top' | 'bottom' | undefined;
 
 type DraggableState = {
     dropLine: DropLineDirection;
@@ -104,7 +102,7 @@ interface WithDraggableOptions<T = any> {
     allowReadOnly?: boolean;
     draggableProps?: T;
 }
-declare const useWithDraggable: <T = any>({ editor, level, filter, element, allowReadOnly, draggableProps }: WithDraggableOptions<T> & _udecode_plate_core.PlateRenderNodeProps<_udecode_slate.Value, _udecode_plate_core.PlateEditor<_udecode_slate.Value>> & Omit<slate_react.RenderElementProps, "element"> & {
+declare const useWithDraggable: <T = any>({ editor, level, filter, element, allowReadOnly, draggableProps, }: WithDraggableOptions<T> & _udecode_plate_core.PlateRenderNodeProps<_udecode_slate.Value, _udecode_plate_core.PlateEditor<_udecode_slate.Value>> & Omit<slate_react.RenderElementProps, "element"> & {
     element: _udecode_slate.TElement;
 }) => {
     disabled: boolean;
@@ -193,7 +191,7 @@ declare const useDropNode: <V extends Value>(editor: TReactEditor<V>, { nodeRef,
     isOver: boolean;
 }, react_dnd.ConnectDropTarget];
 
-interface UseDndNodeOptions extends Pick<UseDropNodeOptions, "id" | "nodeRef">, Pick<UseDragNodeOptions, "type"> {
+interface UseDndNodeOptions extends Pick<UseDropNodeOptions, 'id' | 'nodeRef'>, Pick<UseDragNodeOptions, 'type'> {
     drag?: UseDragNodeOptions;
     drop?: UseDropNodeOptions;
     onDropHandler?: (editor: TEditor, props: {
@@ -218,7 +216,7 @@ interface UseDndNodeOptions extends Pick<UseDropNodeOptions, "id" | "nodeRef">, 
  * A default preview is used to show the node being dragged, which can be customized or removed.
  * Returns the drag ref and drop line direction.
  */
-declare const useDndNode: ({ id, type, nodeRef, preview: previewOptions, drag: dragOptions, drop: dropOptions, onDropHandler }: UseDndNodeOptions) => {
+declare const useDndNode: ({ id, type, nodeRef, preview: previewOptions, drag: dragOptions, drop: dropOptions, onDropHandler, }: UseDndNodeOptions) => {
     isDragging: boolean;
     isOver: boolean;
     dropLine: DropLineDirection;
@@ -228,7 +226,7 @@ declare const useDndNode: ({ id, type, nodeRef, preview: previewOptions, drag: d
 /**
  * {@link useDndNode}
  */
-declare const useDndBlock: (options: WithPartial<UseDndNodeOptions, "type">) => {
+declare const useDndBlock: (options: WithPartial<UseDndNodeOptions, 'type'>) => {
     isDragging: boolean;
     isOver: boolean;
     dropLine: DropLineDirection;
@@ -246,7 +244,7 @@ declare const useDragBlock: <V extends Value>(editor: TEditor<V>, id: string) =>
 /**
  * {@link useDropNode}
  */
-declare const useDropBlock: <V extends Value>(editor: TReactEditor<V>, options: Omit<UseDropNodeOptions, "accept">) => [{
+declare const useDropBlock: <V extends Value>(editor: TReactEditor<V>, options: Omit<UseDropNodeOptions, 'accept'>) => [{
     isOver: boolean;
 }, react_dnd.ConnectDropTarget];
 
@@ -314,7 +312,7 @@ interface GetHoverDirectionOptions {
  * If dragging a node A over another node B:
  * get the direction of node A relative to node B.
  */
-declare const getHoverDirection: ({ dragItem, id, monitor, nodeRef }: GetHoverDirectionOptions) => DropDirection;
+declare const getHoverDirection: ({ dragItem, id, monitor, nodeRef, }: GetHoverDirectionOptions) => DropDirection;
 
 /**
  * Get new direction if updated

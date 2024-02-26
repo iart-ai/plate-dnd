@@ -6,6 +6,6 @@ export interface DragItemNode {
   [key: string]: unknown;
 }
 
-export type DropLineDirection = "" | "top" | "bottom";
+export type DropLineDirection = '' | 'top' | 'bottom';
 
-export type DropDirection = "top" | "bottom" | undefined;
+export type DropDirection = 'top' | 'bottom' | undefined;

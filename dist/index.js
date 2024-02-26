@@ -96,8 +96,7 @@ var import_react3 = __toESM(require("react"));
 // src/dndStore.ts
 var import_plate_common = require("@udecode/plate-common");
 var dndStore = (0, import_plate_common.createZustandStore)("dnd")({
-  isDragging: false,
-  editorId: null
+  isDragging: false
 });
 
 // src/components/Scroller/Scroller.tsx
@@ -226,10 +225,7 @@ var createDndPlugin = (0, import_plate_common2.createPluginFactory)({
   key: KEY_DND,
   handlers: {
     onDragStart: () => () => dndStore.set.isDragging(true),
-    onDragEnd: (editor) => () => {
-      dndStore.set.isDragging(false);
-      console.log("\u6D4B\u8BD533", editor.id);
-    },
+    onDragEnd: () => () => dndStore.set.isDragging(false),
     onDrop: (editor) => () => editor.isDragging
   },
   then: (editor, { options }) => ({
@@ -278,10 +274,23 @@ var useDraggable = (state) => {
 var import_react6 = __toESM(require("react"));
 var import_plate_common3 = require("@udecode/plate-common");
 var import_slate_react = require("slate-react");
-var useWithDraggable = ({ editor, level = 0, filter, element, allowReadOnly = false, draggableProps }) => {
+var useWithDraggable = ({
+  editor,
+  level = 0,
+  filter,
+  element,
+  allowReadOnly = false,
+  draggableProps
+}) => {
   const readOnly = (0, import_slate_react.useReadOnly)();
-  const path = import_react6.default.useMemo(() => (0, import_plate_common3.findNodePath)(editor, element), [editor, element]);
-  const filteredOut = import_react6.default.useMemo(() => path && (Number.isInteger(level) && level !== path.length - 1 || filter && filter(editor, path)), [path, level, filter, editor]);
+  const path = import_react6.default.useMemo(
+    () => (0, import_plate_common3.findNodePath)(editor, element),
+    [editor, element]
+  );
+  const filteredOut = import_react6.default.useMemo(
+    () => path && (Number.isInteger(level) && level !== path.length - 1 || filter && filter(editor, path)),
+    [path, level, filter, editor]
+  );
   return {
     disabled: filteredOut || !allowReadOnly && readOnly,
     draggableProps: __spreadValues({
@@ -346,7 +355,12 @@ var import_plate_common4 = require("@udecode/plate-common");
 var import_slate = require("slate");
 
 // src/utils/getHoverDirection.ts
-var getHoverDirection = ({ dragItem, id, monitor, nodeRef }) => {
+var getHoverDirection = ({
+  dragItem,
+  id,
+  monitor,
+  nodeRef
+}) => {
   var _a;
   if (!nodeRef.current)
     return;
@@ -391,11 +405,9 @@ var onDropNode = (editor, {
   const direction = getHoverDirection({ dragItem, monitor, nodeRef, id });
   if (!direction)
     return;
-  const isInsert = dragItem.editorId === void 0;
   const dragEntry = (0, import_plate_common4.findNode)(editor, {
     at: [],
-    // match: { id: dragItem.id },
-    match: { id: isInsert ? id : dragItem.id }
+    match: { id: dragItem.id }
   });
   if (!dragEntry)
     return;
@@ -421,41 +433,10 @@ var onDropNode = (editor, {
     const _dropPath = dropPath;
     const before = import_slate.Path.isBefore(dragPath, _dropPath) && import_slate.Path.isSibling(dragPath, _dropPath);
     const to = before ? _dropPath : import_slate.Path.next(_dropPath);
-    if (!isInsert) {
-      (0, import_plate_common4.moveNodes)(editor, {
-        at: dragPath,
-        to
-      });
-    } else {
-      let element = {
-        type: dragItem.id,
-        children: [{ text: "" }],
-        styles: dragItem.styles
-      };
-      if (dragItem.id === "ol") {
-        element = {
-          type: "p",
-          children: [{ text: "" }],
-          styles: dragItem.styles,
-          listStyleType: "number",
-          indent: 2
-        };
-      }
-      (0, import_plate_common4.insertElements)(
-        editor,
-        element,
-        (0, import_plate_common4.getQueryOptions)(editor, {
-          select: true,
-          nextBlock: true
-        })
-      );
-      if (direction === "top") {
-        (0, import_plate_common4.moveNodes)(editor, {
-          at: import_slate.Path.next(to),
-          to
-        });
-      }
-    }
+    (0, import_plate_common4.moveNodes)(editor, {
+      at: dragPath,
+      to
+    });
   }
 };
 
@@ -469,7 +450,6 @@ var onHoverNode = (editor, {
   dropLine,
   id
 }) => {
-  alert(editor.id);
   const direction = getHoverDirection({
     dragItem,
     monitor,
@@ -483,15 +463,23 @@ var onHoverNode = (editor, {
     (0, import_plate_common5.focusEditor)(editor);
     (0, import_plate_common5.collapseSelection)(editor);
   }
-  if (direction) {
-    dndStore.set.editorId(editor.id);
-  }
-  console.log("\u6D4B\u8BD5drop22", direction, dropLineDir, editor.id, monitor.getHandlerId());
 };
 
 // src/hooks/useDropNode.ts
 var useDropNode = (editor, _a) => {
-  var _b = _a, { nodeRef, id, dropLine, onChangeDropLine, onDropHandler } = _b, options = __objRest(_b, ["nodeRef", "id", "dropLine", "onChangeDropLine", "onDropHandler"]);
+  var _b = _a, {
+    nodeRef,
+    id,
+    dropLine,
+    onChangeDropLine,
+    onDropHandler
+  } = _b, options = __objRest(_b, [
+    "nodeRef",
+    "id",
+    "dropLine",
+    "onChangeDropLine",
+    "onDropHandler"
+  ]);
   return (0, import_react_dnd2.useDrop)(__spreadValues({
     drop: (dragItem, monitor) => {
       const handled = !!onDropHandler && onDropHandler(editor, {
@@ -521,15 +509,22 @@ var useDropNode = (editor, _a) => {
 };
 
 // src/hooks/useDndNode.ts
-var useDndNode = ({ id, type, nodeRef, preview: previewOptions = {}, drag: dragOptions, drop: dropOptions, onDropHandler }) => {
+var useDndNode = ({
+  id,
+  type,
+  nodeRef,
+  preview: previewOptions = {},
+  drag: dragOptions,
+  drop: dropOptions,
+  onDropHandler
+}) => {
   const editor = (0, import_plate_common6.useEditorRef)();
   const [dropLine, setDropLine] = import_react8.default.useState("");
   const [{ isDragging }, dragRef, preview] = useDragNode(editor, __spreadValues({
     id,
     type
   }, dragOptions));
-  const dropEditor = (0, import_plate_common6.useEditorRef)(dndStore.use.editorId() || void 0);
-  const [{ isOver }, drop] = useDropNode(dropEditor, __spreadValues({
+  const [{ isOver }, drop] = useDropNode(editor, __spreadValues({
     accept: type,
     id,
     nodeRef,
@@ -628,7 +623,9 @@ var selectBlocksBySelectionOrId = (editor, id) => {
   if (!editor.selection)
     return;
   const blockEntries = getBlocksWithId(editor, { at: editor.selection });
-  const isBlockSelected = blockEntries.some((blockEntry) => blockEntry[0].id === id);
+  const isBlockSelected = blockEntries.some(
+    (blockEntry) => blockEntry[0].id === id
+  );
   if (isBlockSelected) {
     (0, import_plate_common12.select)(editor, getNodesRange(editor, blockEntries));
     (0, import_plate_common12.focusEditor)(editor);

@@ -1,9 +1,13 @@
-import React from "react";
-import { AnyObject, PlateRenderElementProps } from "@udecode/plate-common";
+import React from 'react';
+import { AnyObject, PlateRenderElementProps } from '@udecode/plate-common';
 
-import { useWithDraggable, WithDraggableOptions } from "./useWithDraggable";
+import { useWithDraggable, WithDraggableOptions } from './useWithDraggable';
 
-export const withDraggable = <T extends AnyObject = AnyObject>(Draggable: React.FC<any>, Component: React.FC<any>, options?: WithDraggableOptions<T>) =>
+export const withDraggable = <T extends AnyObject = AnyObject>(
+  Draggable: React.FC<any>,
+  Component: React.FC<any>,
+  options?: WithDraggableOptions<T>
+) =>
   // eslint-disable-next-line react/display-name
   React.forwardRef<HTMLDivElement, PlateRenderElementProps>((props, ref) => {
     const { disabled, draggableProps } = useWithDraggable({

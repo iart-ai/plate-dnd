@@ -37,8 +37,7 @@ import React3 from "react";
 // src/dndStore.ts
 import { createZustandStore } from "@udecode/plate-common";
 var dndStore = createZustandStore("dnd")({
-  isDragging: false,
-  editorId: null
+  isDragging: false
 });
 
 // src/components/Scroller/Scroller.tsx
@@ -167,10 +166,7 @@ var createDndPlugin = createPluginFactory({
   key: KEY_DND,
   handlers: {
     onDragStart: () => () => dndStore.set.isDragging(true),
-    onDragEnd: (editor) => () => {
-      dndStore.set.isDragging(false);
-      console.log("\u6D4B\u8BD533", editor.id);
-    },
+    onDragEnd: () => () => dndStore.set.isDragging(false),
     onDrop: (editor) => () => editor.isDragging
   },
   then: (editor, { options }) => ({
@@ -217,12 +213,27 @@ var useDraggable = (state) => {
 
 // src/components/useWithDraggable.ts
 import React6 from "react";
-import { findNodePath } from "@udecode/plate-common";
+import {
+  findNodePath
+} from "@udecode/plate-common";
 import { useReadOnly } from "slate-react";
-var useWithDraggable = ({ editor, level = 0, filter, element, allowReadOnly = false, draggableProps }) => {
+var useWithDraggable = ({
+  editor,
+  level = 0,
+  filter,
+  element,
+  allowReadOnly = false,
+  draggableProps
+}) => {
   const readOnly = useReadOnly();
-  const path = React6.useMemo(() => findNodePath(editor, element), [editor, element]);
-  const filteredOut = React6.useMemo(() => path && (Number.isInteger(level) && level !== path.length - 1 || filter && filter(editor, path)), [path, level, filter, editor]);
+  const path = React6.useMemo(
+    () => findNodePath(editor, element),
+    [editor, element]
+  );
+  const filteredOut = React6.useMemo(
+    () => path && (Number.isInteger(level) && level !== path.length - 1 || filter && filter(editor, path)),
+    [path, level, filter, editor]
+  );
   return {
     disabled: filteredOut || !allowReadOnly && readOnly,
     draggableProps: __spreadValues({
@@ -286,14 +297,17 @@ import { useDrop } from "react-dnd";
 import {
   findNode,
   focusEditor,
-  getQueryOptions,
-  insertElements,
   moveNodes
 } from "@udecode/plate-common";
 import { Path } from "slate";
 
 // src/utils/getHoverDirection.ts
-var getHoverDirection = ({ dragItem, id, monitor, nodeRef }) => {
+var getHoverDirection = ({
+  dragItem,
+  id,
+  monitor,
+  nodeRef
+}) => {
   var _a;
   if (!nodeRef.current)
     return;
@@ -338,11 +352,9 @@ var onDropNode = (editor, {
   const direction = getHoverDirection({ dragItem, monitor, nodeRef, id });
   if (!direction)
     return;
-  const isInsert = dragItem.editorId === void 0;
   const dragEntry = findNode(editor, {
     at: [],
-    // match: { id: dragItem.id },
-    match: { id: isInsert ? id : dragItem.id }
+    match: { id: dragItem.id }
   });
   if (!dragEntry)
     return;
@@ -368,46 +380,19 @@ var onDropNode = (editor, {
     const _dropPath = dropPath;
     const before = Path.isBefore(dragPath, _dropPath) && Path.isSibling(dragPath, _dropPath);
     const to = before ? _dropPath : Path.next(_dropPath);
-    if (!isInsert) {
-      moveNodes(editor, {
-        at: dragPath,
-        to
-      });
-    } else {
-      let element = {
-        type: dragItem.id,
-        children: [{ text: "" }],
-        styles: dragItem.styles
-      };
-      if (dragItem.id === "ol") {
-        element = {
-          type: "p",
-          children: [{ text: "" }],
-          styles: dragItem.styles,
-          listStyleType: "number",
-          indent: 2
-        };
-      }
-      insertElements(
-        editor,
-        element,
-        getQueryOptions(editor, {
-          select: true,
-          nextBlock: true
-        })
-      );
-      if (direction === "top") {
-        moveNodes(editor, {
-          at: Path.next(to),
-          to
-        });
-      }
-    }
+    moveNodes(editor, {
+      at: dragPath,
+      to
+    });
   }
 };
 
 // src/transforms/onHoverNode.ts
-import { collapseSelection, focusEditor as focusEditor2, isExpanded } from "@udecode/plate-common";
+import {
+  collapseSelection,
+  focusEditor as focusEditor2,
+  isExpanded
+} from "@udecode/plate-common";
 var onHoverNode = (editor, {
   dragItem,
   monitor,
@@ -416,7 +401,6 @@ var onHoverNode = (editor, {
   dropLine,
   id
 }) => {
-  alert(editor.id);
   const direction = getHoverDirection({
     dragItem,
     monitor,
@@ -430,15 +414,23 @@ var onHoverNode = (editor, {
     focusEditor2(editor);
     collapseSelection(editor);
   }
-  if (direction) {
-    dndStore.set.editorId(editor.id);
-  }
-  console.log("\u6D4B\u8BD5drop22", direction, dropLineDir, editor.id, monitor.getHandlerId());
 };
 
 // src/hooks/useDropNode.ts
 var useDropNode = (editor, _a) => {
-  var _b = _a, { nodeRef, id, dropLine, onChangeDropLine, onDropHandler } = _b, options = __objRest(_b, ["nodeRef", "id", "dropLine", "onChangeDropLine", "onDropHandler"]);
+  var _b = _a, {
+    nodeRef,
+    id,
+    dropLine,
+    onChangeDropLine,
+    onDropHandler
+  } = _b, options = __objRest(_b, [
+    "nodeRef",
+    "id",
+    "dropLine",
+    "onChangeDropLine",
+    "onDropHandler"
+  ]);
   return useDrop(__spreadValues({
     drop: (dragItem, monitor) => {
       const handled = !!onDropHandler && onDropHandler(editor, {
@@ -468,15 +460,22 @@ var useDropNode = (editor, _a) => {
 };
 
 // src/hooks/useDndNode.ts
-var useDndNode = ({ id, type, nodeRef, preview: previewOptions = {}, drag: dragOptions, drop: dropOptions, onDropHandler }) => {
+var useDndNode = ({
+  id,
+  type,
+  nodeRef,
+  preview: previewOptions = {},
+  drag: dragOptions,
+  drop: dropOptions,
+  onDropHandler
+}) => {
   const editor = useEditorRef();
   const [dropLine, setDropLine] = React8.useState("");
   const [{ isDragging }, dragRef, preview] = useDragNode(editor, __spreadValues({
     id,
     type
   }, dragOptions));
-  const dropEditor = useEditorRef(dndStore.use.editorId() || void 0);
-  const [{ isOver }, drop] = useDropNode(dropEditor, __spreadValues({
+  const [{ isOver }, drop] = useDropNode(editor, __spreadValues({
     accept: type,
     id,
     nodeRef,
@@ -520,7 +519,10 @@ var useDndBlock = (options) => useDndNode(__spreadValues({
 var useDropBlock = (editor, options) => useDropNode(editor, __spreadValues({ accept: DRAG_ITEM_BLOCK }, options));
 
 // src/queries/getBlocksWithId.ts
-import { getNodeEntries, isBlock } from "@udecode/plate-common";
+import {
+  getNodeEntries,
+  isBlock
+} from "@udecode/plate-common";
 var getBlocksWithId = (editor, options) => {
   const _nodes = getNodeEntries(editor, __spreadValues({
     match: (n) => isBlock(editor, n) && !!n.id
@@ -539,7 +541,12 @@ var getNodesRange = (editor, nodeEntries) => {
 };
 
 // src/transforms/focusBlockStartById.ts
-import { findNode as findNode2, focusEditor as focusEditor3, getStartPoint, select } from "@udecode/plate-common";
+import {
+  findNode as findNode2,
+  focusEditor as focusEditor3,
+  getStartPoint,
+  select
+} from "@udecode/plate-common";
 var focusBlockStartById = (editor, id) => {
   var _a;
   const path = (_a = findNode2(editor, { at: [], match: { id } })) == null ? void 0 : _a[1];
@@ -550,7 +557,11 @@ var focusBlockStartById = (editor, id) => {
 };
 
 // src/transforms/removeBlocksAndFocus.ts
-import { focusEditor as focusEditor4, removeNodes, unhangRange } from "@udecode/plate-common";
+import {
+  focusEditor as focusEditor4,
+  removeNodes,
+  unhangRange
+} from "@udecode/plate-common";
 var removeBlocksAndFocus = (editor, options) => {
   unhangRange(editor, options == null ? void 0 : options.at, options);
   const nodeEntries = getBlocksWithId(editor, options);
@@ -559,7 +570,12 @@ var removeBlocksAndFocus = (editor, options) => {
 };
 
 // src/transforms/selectBlockById.ts
-import { findNode as findNode3, focusEditor as focusEditor5, getRange as getRange2, select as select2 } from "@udecode/plate-common";
+import {
+  findNode as findNode3,
+  focusEditor as focusEditor5,
+  getRange as getRange2,
+  select as select2
+} from "@udecode/plate-common";
 var selectBlockById = (editor, id) => {
   var _a;
   const path = (_a = findNode3(editor, { at: [], match: { id } })) == null ? void 0 : _a[1];
@@ -575,7 +591,9 @@ var selectBlocksBySelectionOrId = (editor, id) => {
   if (!editor.selection)
     return;
   const blockEntries = getBlocksWithId(editor, { at: editor.selection });
-  const isBlockSelected = blockEntries.some((blockEntry) => blockEntry[0].id === id);
+  const isBlockSelected = blockEntries.some(
+    (blockEntry) => blockEntry[0].id === id
+  );
   if (isBlockSelected) {
     select3(editor, getNodesRange(editor, blockEntries));
     focusEditor6(editor);

@@ -1,14 +1,15 @@
-import React from "react";
-import { TEditor, useEditorRef } from "@udecode/plate-common";
-import { DropTargetMonitor } from "react-dnd";
-import { getEmptyImage } from "react-dnd-html5-backend";
+import React from 'react';
+import { TEditor, useEditorRef } from '@udecode/plate-common';
+import { DropTargetMonitor } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { DragItemNode, DropLineDirection } from "../types";
-import { useDragNode, UseDragNodeOptions } from "./useDragNode";
-import { useDropNode, UseDropNodeOptions } from "./useDropNode";
-import { dndStore } from "../dndStore";
+import { DragItemNode, DropLineDirection } from '../types';
+import { useDragNode, UseDragNodeOptions } from './useDragNode';
+import { useDropNode, UseDropNodeOptions } from './useDropNode';
 
-export interface UseDndNodeOptions extends Pick<UseDropNodeOptions, "id" | "nodeRef">, Pick<UseDragNodeOptions, "type"> {
+export interface UseDndNodeOptions
+  extends Pick<UseDropNodeOptions, 'id' | 'nodeRef'>,
+    Pick<UseDragNodeOptions, 'type'> {
   drag?: UseDragNodeOptions;
   drop?: UseDropNodeOptions;
   onDropHandler?: (
@@ -38,19 +39,25 @@ export interface UseDndNodeOptions extends Pick<UseDropNodeOptions, "id" | "node
  * A default preview is used to show the node being dragged, which can be customized or removed.
  * Returns the drag ref and drop line direction.
  */
-export const useDndNode = ({ id, type, nodeRef, preview: previewOptions = {}, drag: dragOptions, drop: dropOptions, onDropHandler }: UseDndNodeOptions) => {
+export const useDndNode = ({
+  id,
+  type,
+  nodeRef,
+  preview: previewOptions = {},
+  drag: dragOptions,
+  drop: dropOptions,
+  onDropHandler,
+}: UseDndNodeOptions) => {
   const editor = useEditorRef();
 
-  const [dropLine, setDropLine] = React.useState<DropLineDirection>("");
+  const [dropLine, setDropLine] = React.useState<DropLineDirection>('');
 
   const [{ isDragging }, dragRef, preview] = useDragNode(editor, {
     id,
     type,
     ...dragOptions,
   });
-  const dropEditor = useEditorRef(dndStore.use.editorId() || undefined);
-  // console.log('测试drop33', dndStore.use.editorId(), dropEditor);
-  const [{ isOver }, drop] = useDropNode(dropEditor, {
+  const [{ isOver }, drop] = useDropNode(editor, {
     accept: type,
     id,
     nodeRef,
@@ -71,7 +78,7 @@ export const useDndNode = ({ id, type, nodeRef, preview: previewOptions = {}, dr
   }
 
   if (!isOver && dropLine) {
-    setDropLine("");
+    setDropLine('');
   }
 
   return {

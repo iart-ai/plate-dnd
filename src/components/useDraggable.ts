@@ -1,8 +1,8 @@
-import React from "react";
-import { TEditor, TElement } from "@udecode/plate-common";
-import { ConnectDragSource, DropTargetMonitor } from "react-dnd";
+import React from 'react';
+import { TEditor, TElement } from '@udecode/plate-common';
+import { ConnectDragSource, DropTargetMonitor } from 'react-dnd';
 
-import { DragItemNode, DropLineDirection, useDndBlock } from "..";
+import { DragItemNode, DropLineDirection, useDndBlock } from '..';
 
 export type DraggableState = {
   dropLine: DropLineDirection;

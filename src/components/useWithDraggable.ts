@@ -1,7 +1,11 @@
-import React from "react";
-import { findNodePath, PlateRenderElementProps, TEditor } from "@udecode/plate-common";
-import { Path } from "slate";
-import { useReadOnly } from "slate-react";
+import React from 'react';
+import {
+  findNodePath,
+  PlateRenderElementProps,
+  TEditor,
+} from '@udecode/plate-common';
+import { Path } from 'slate';
+import { useReadOnly } from 'slate-react';
 
 export interface WithDraggableOptions<T = any> {
   /**
@@ -23,11 +27,27 @@ export interface WithDraggableOptions<T = any> {
   draggableProps?: T;
 }
 
-export const useWithDraggable = <T = any>({ editor, level = 0, filter, element, allowReadOnly = false, draggableProps }: WithDraggableOptions<T> & PlateRenderElementProps) => {
+export const useWithDraggable = <T = any>({
+  editor,
+  level = 0,
+  filter,
+  element,
+  allowReadOnly = false,
+  draggableProps,
+}: WithDraggableOptions<T> & PlateRenderElementProps) => {
   const readOnly = useReadOnly();
-  const path = React.useMemo(() => findNodePath(editor, element), [editor, element]);
+  const path = React.useMemo(
+    () => findNodePath(editor, element),
+    [editor, element]
+  );
 
-  const filteredOut = React.useMemo(() => path && ((Number.isInteger(level) && level !== path.length - 1) || (filter && filter(editor, path))), [path, level, filter, editor]);
+  const filteredOut = React.useMemo(
+    () =>
+      path &&
+      ((Number.isInteger(level) && level !== path.length - 1) ||
+        (filter && filter(editor, path))),
+    [path, level, filter, editor]
+  );
 
   return {
     disabled: filteredOut || (!allowReadOnly && readOnly),

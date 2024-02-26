@@ -1,18 +1,21 @@
 /**
  * Get new direction if updated
  */
-import { DropLineDirection } from "../types";
+import { DropLineDirection } from '../types';
 
-export const getNewDirection = (previousDir: string, dir?: string): DropLineDirection | undefined => {
+export const getNewDirection = (
+  previousDir: string,
+  dir?: string
+): DropLineDirection | undefined => {
   if (!dir && previousDir) {
-    return "";
+    return '';
   }
 
-  if (dir === "top" && previousDir !== "top") {
-    return "top";
+  if (dir === 'top' && previousDir !== 'top') {
+    return 'top';
   }
 
-  if (dir === "bottom" && previousDir !== "bottom") {
-    return "bottom";
+  if (dir === 'bottom' && previousDir !== 'bottom') {
+    return 'bottom';
   }
 };

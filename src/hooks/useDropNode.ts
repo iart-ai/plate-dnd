@@ -1,11 +1,12 @@
-import { TEditor, TReactEditor, Value } from "@udecode/plate-common";
-import { DropTargetHookSpec, DropTargetMonitor, useDrop } from "react-dnd";
+import { TEditor, TReactEditor, Value } from '@udecode/plate-common';
+import { DropTargetHookSpec, DropTargetMonitor, useDrop } from 'react-dnd';
 
-import { onDropNode } from "../transforms/onDropNode";
-import { onHoverNode } from "../transforms/onHoverNode";
-import { DragItemNode, DropLineDirection } from "../types";
+import { onDropNode } from '../transforms/onDropNode';
+import { onHoverNode } from '../transforms/onHoverNode';
+import { DragItemNode, DropLineDirection } from '../types';
 
-export interface UseDropNodeOptions extends DropTargetHookSpec<DragItemNode, unknown, { isOver: boolean }> {
+export interface UseDropNodeOptions
+  extends DropTargetHookSpec<DragItemNode, unknown, { isOver: boolean }> {
   /**
    * The reference to the node being dragged.
    */
@@ -58,8 +59,17 @@ export interface UseDropNodeOptions extends DropTargetHookSpec<DragItemNode, unk
  * Collect:
  * - isOver: true if mouse is over the block
  */
-export const useDropNode = <V extends Value>(editor: TReactEditor<V>, { nodeRef, id, dropLine, onChangeDropLine, onDropHandler, ...options }: UseDropNodeOptions) => {
-  // console.log('测试drop33', editor.id);
+export const useDropNode = <V extends Value>(
+  editor: TReactEditor<V>,
+  {
+    nodeRef,
+    id,
+    dropLine,
+    onChangeDropLine,
+    onDropHandler,
+    ...options
+  }: UseDropNodeOptions
+) => {
   return useDrop<DragItemNode, unknown, { isOver: boolean }>({
     drop: (dragItem, monitor) => {
       const handled =

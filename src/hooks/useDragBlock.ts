@@ -1,8 +1,8 @@
-import { TEditor, Value } from "@udecode/plate-common";
+import { TEditor, Value } from '@udecode/plate-common';
 
-import { useDragNode } from "./useDragNode";
+import { useDragNode } from './useDragNode';
 
-export const DRAG_ITEM_BLOCK = "block";
+export const DRAG_ITEM_BLOCK = 'block';
 
 /**
  * {@link useDragNode}
